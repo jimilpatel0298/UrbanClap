@@ -1,3 +1,4 @@
+"""models file for users_api"""
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
