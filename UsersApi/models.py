@@ -1,20 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.contrib.auth import password_validation
 
 
 class UserProfileManager(BaseUserManager):
     """Manager class for user profile"""
-    def create_user(self, email, name, password=None):
+    def create_user(self, email, name, password):
         """Create a new user profile"""
         if not email:
             raise ValueError('Users must have an email address.')
+        if not password:
+            raise ValueError('Users must have a password.')
 
         email = self.normalize_email(email)
         user = self.model(email=email, name=name)
-
-        if password_validation.validate_password(password):
-            user.set_password(password)
+        user.set_password(password)
 
         user.save(using=self._db)
 
@@ -34,9 +33,9 @@ class UserProfileManager(BaseUserManager):
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users"""
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True)
     phone = models.IntegerField(max_length=10, unique=True)
-    type = models.CharField(max_length=255)
+    type = models.CharField(max_length=255, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
