@@ -19,11 +19,10 @@ from rest_framework.routers import DefaultRouter
 from services_api import views as v
 
 router = DefaultRouter()
-# router.register('profile',v.UserProfileViewSet)
+router.register('services',v.MakeService)
+router.register('dashboard',v.ListOfServices)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('login/',v.UserLoginApiView.as_view()),
-    # path('',include(router.urls))
-    path('dashboard')
+    path('',include(router.urls)),
 ]

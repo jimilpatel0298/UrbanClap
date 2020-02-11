@@ -35,7 +35,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True)
-    phone = models.IntegerField(max_length=10, unique=True)
+    phone = models.IntegerField(unique=True)
     type = models.CharField(max_length=255, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)

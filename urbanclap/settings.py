@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'users_api',
-    'services_api'
-    'rest_framework.authtoken'
+    'services_api',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'UrbanClap.urls'
+ROOT_URLCONF = 'urbanclap.urls'
 
 TEMPLATES = [
     {
@@ -124,4 +124,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = "UserApi.UserProfile"
+AUTH_USER_MODEL = "users_api.UserProfile"
