@@ -1,4 +1,5 @@
 from django.db import models
+from djongo import models as m
 
 
 # Create your models here.
@@ -12,6 +13,11 @@ class Service(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Comment(models.Model):
+    author = models.CharField(max_length=255)
+    content = models.CharField(max_length=255)
+
+
 class RequestService(models.Model):
     """ Database model for requested services by customer. """
     customer = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
@@ -21,4 +27,5 @@ class RequestService(models.Model):
     status = models.CharField(max_length=255, default='pending')
     requested_at = models.DateTimeField(auto_now_add=True)
     request_updated_at = models.DateTimeField(auto_now=True)
+    comments = m.ArrayField(model_container=Comment)
 
