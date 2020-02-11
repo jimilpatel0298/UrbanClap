@@ -25,4 +25,5 @@ router.register('dashboard',v.ListOfServices)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include(router.urls)),
+    path('api/', include('users_api.urls')),
 ]
