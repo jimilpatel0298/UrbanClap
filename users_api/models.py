@@ -36,7 +36,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True)
     phone = models.CharField(max_length=10, unique=True, null=True)
-    user_type = models.CharField(max_length=255, null=False)
+    user_type = models.CharField(max_length=255, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
