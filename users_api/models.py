@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 class UserProfileManager(BaseUserManager):
     """Manager class for user profile"""
-    def create_user(self, email, name, password):
+    def create_user(self, email, name, password, user_type, phone):
         """Create a new user profile"""
         if not email:
             raise ValueError('Users must have an email address.')
@@ -13,7 +13,7 @@ class UserProfileManager(BaseUserManager):
             raise ValueError('Users must have a password.')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        user = self.model(email=email, name=name, user_type=user_type, phone=phone)
         user.set_password(password)
 
         user.save(using=self._db)
@@ -22,7 +22,7 @@ class UserProfileManager(BaseUserManager):
 
     def create_superuser(self, email, name, password):
         """Create super user"""
-        user = self.create_user(email, name, password)
+        user = self.create_user(email, name, password, "", "")
 
         user.is_superuser = True
         user.is_staff = True
@@ -35,8 +35,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, null=True)
-    phone = models.IntegerField(max_length=10, unique=True)
-    type = models.CharField(max_length=255, blank=False, null=False)
+    phone = models.IntegerField(max_length=10, unique=True, null=True)
+    user_type = models.CharField(max_length=255, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

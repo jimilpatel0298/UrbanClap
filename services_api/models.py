@@ -21,4 +21,3 @@ class RequestService(models.Model):
     status = models.CharField(max_length=255, default='pending')
     requested_at = models.DateTimeField(auto_now_add=True)
     request_updated_at = models.DateTimeField(auto_now=True)
-
