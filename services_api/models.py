@@ -28,4 +28,3 @@ class RequestService(models.Model):
     requested_at = models.DateTimeField(auto_now_add=True)
     request_updated_at = models.DateTimeField(auto_now=True)
     comments = m.ArrayField(model_container=Comment)
-
