@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth import password_validation
 from users_api import models
 
 
@@ -14,9 +15,27 @@ class UserProfileSerializer(serializers.ModelSerializer):
                 'style': {'input_type': 'password'}
             },
             'user_type': {
-                'read_only': True
+                'style': {
+                    'placeholder': "Consumer / Service Provider"
+                }
             }
         }
+
+    def validate_password(self, password):
+        """Validate Password"""
+        password_validation.validate_password(password, self.instance)
+        return password
+
+    def validate(self, data):
+        """Validate phone field"""
+        if not data['phone'].isnumeric():
+            raise serializers.ValidationError("Please enter a valid phone number.")
+        elif len(data['phone']) != 10:
+            raise serializers.ValidationError("Ensure phone length is of 10 digits.")
+        elif data['user_type'] not in ('Consumer', 'Service Provider'):
+            raise serializers.ValidationError("Ensure user type is only either a 'consumer' or a 'service provider'.")
+        else:
+            return data
 
     def create(self, validated_data):
         """Create and return new user"""
@@ -27,5 +46,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
             user_type=validated_data['user_type'],
             phone=validated_data['phone']
         )
-
         return user
