@@ -17,9 +17,9 @@ class RequestService(models.Model):
 
     customer = models.ForeignKey()
     provider = models.ForeignKey()
-    service_id = models.ForeignKey('Service',on_delete=models.CASCADE,null=False,)
+    service_id = models.ForeignKey('Service', on_delete=models.CASCADE,null=False,)
     request_desc = models.CharField(max_length=255)
-    status = models.CharField(max_length=255,default='pending')
+    status = models.CharField(max_length=255, default='pending')
     requested_at =  models.DateTimeField(auto_now_add=True)
     request_updated_at = models.DateTimeField(auto_now=True)
 
