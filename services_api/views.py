@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status, viewsets, filters, mixins
 from rest_framework.response import Response
@@ -8,13 +9,16 @@ from rest_framework.settings import api_settings
 # from .permissions import UpdateOwnProfile
 from rest_framework.viewsets import GenericViewSet
 
-from .serializers import ServiceSerializer
-from .models import Service,RequestService
+from .custom_permissions import IsServiceProvider
+from .serializers import ServiceSerializer, RequestSerializer
+from .models import Service, RequestService
 
 
 class MakeService(viewsets.ModelViewSet):
+    permission_classes = [IsServiceProvider]
     serializer_class = ServiceSerializer
     queryset = Service.objects.all()
+
     # filter_backends = (filters.SearchFilter,)
     # search_fields = ('name','email',)
 
@@ -29,17 +33,21 @@ class ListOfServices(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericVi
     # filter_backends = (filters.SearchFilter,)
     # search_fields = ('name','email',)
 
+
 class ListOfRequestsToProvider(viewsets.ModelViewSet):
     pass
 
 
-class MakeServiceRequest(viewsets.ModelViewSet):
-    pass
+class MakeServiceRequest(mixins.CreateModelMixin, GenericViewSet):
+    serializer_class = RequestSerializer
+    queryset = Service.objects.all()
+
+    # def perform_create(self, serializer):
+        # serializer.save(customer = self.request.user, provider = self. )
 
 
 class CustomerRequestList(viewsets.ModelViewSet):
     pass
-
 
 # class UserProfileViewSet(viewsets.ModelViewSet):
 #     serializer_class = UserProfileSerializer
