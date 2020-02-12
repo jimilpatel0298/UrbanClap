@@ -21,4 +21,23 @@ class ServiceSerializer(serializers.ModelSerializer):
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequestService
-        # fields = ('')
+        fields = ('customer','provider','service_id','request_desc','status','comments')
+        extra_kwargs = {
+            # 'id': {'read_only': True}
+                'customer':{
+                    'read_only': True
+                },
+                'provider': {
+                    'read_only': True
+                },
+                'service_id':{
+                    'read_only': True
+                },
+                'status':{
+                    'read_only': True
+                },
+        }
+
+
+
+
