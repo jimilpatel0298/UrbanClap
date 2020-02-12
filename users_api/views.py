@@ -31,7 +31,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         """List method to view all user profiles"""
         queryset = models.UserProfile.objects.all()
         serializer = self.get_serializer(queryset, many=True)
-        status_header = {}
         print(serializer.data)
 
         if serializer.data:
