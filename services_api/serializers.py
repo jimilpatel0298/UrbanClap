@@ -4,6 +4,7 @@ from .models import Service, RequestService
 
 class ServiceSerializer(serializers.ModelSerializer):
     """Create a new service"""
+    service_provider_name = serializers.SerializerMethodField('get_provider_name')
 
     class Meta:
         model = Service
@@ -14,18 +15,30 @@ class ServiceSerializer(serializers.ModelSerializer):
             'service_provider_name': {'read_only': True}
         }
 
+    def get_provider_name(self, data):
+        return data.service_provider.name
+
 
 class RequestSerializer(serializers.ModelSerializer):
     """Create a new request"""
+    provider_name = serializers.SerializerMethodField('get_service_provider_name')
+    service_name = serializers.SerializerMethodField('get_services_name')
 
     class Meta:
         model = RequestService
-        fields = ('consumer', 'provider', 'service_id', 'request_desc', 'status', 'comments')
+        fields = ('consumer', 'provider_name', 'service_id', 'service_name', 'request_desc',
+                  'status', 'comments')
         extra_kwargs = {
             'consumer': {
                 'read_only': True
             },
-            'provider': {
+            'service_name': {
+                'read_only': True
+            },
+            'provider_name': {
+                'read_only': True
+            },
+            'status': {
                 'read_only': True
             },
             'status': {
@@ -35,3 +48,9 @@ class RequestSerializer(serializers.ModelSerializer):
             #     'read_only': True
             # }
         }
+
+    def get_service_provider_name(self, data):
+        return data.service_id.service_provider.name
+
+    def get_services_name(self, data):
+        return data.service_id.service_name
