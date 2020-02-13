@@ -118,7 +118,7 @@ class ListServices(viewsets.ModelViewSet):
         return Response(status_header)
 
 
-class CreateComment(viewsets.ModelViewSet):
+class CreateComment(mixins.CreateModelMixin, GenericViewSet):
     serializer_class = CommentSerializer
     queryset = Service.objects.all()
     authentication_classes = (TokenAuthentication,)
