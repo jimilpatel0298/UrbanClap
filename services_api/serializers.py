@@ -5,6 +5,7 @@ from .models import Service, RequestService
 class ServiceSerializer(serializers.ModelSerializer):
     """Create a new service"""
     service_provider_name = serializers.SerializerMethodField('get_provider_name')
+
     class Meta:
         model = Service
         fields = ('id', 'service_name', 'service_desc', 'service_provider_id', 'service_provider_name')
@@ -38,6 +39,9 @@ class RequestSerializer(serializers.ModelSerializer):
             'provider_name': {
                 'read_only': True
             },
+            'status': {
+                'read_only': True
+            },
             'comments': {
                 'read_only': True
             }
@@ -48,3 +52,15 @@ class RequestSerializer(serializers.ModelSerializer):
 
     def get_services_name(self, data):
         return data.service_id.service_name
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ('author','content')
+
+        extra_kwargs = {
+            'author': {
+                'read_only': True
+            }
+        }

@@ -9,16 +9,18 @@ from rest_framework.settings import api_settings
 from rest_framework.viewsets import GenericViewSet
 
 from .custom_permissions import IsServiceProvider, IsConsumer
-from .serializers import ServiceSerializer, RequestSerializer
+from .serializers import ServiceSerializer, RequestSerializer, CommentSerializer
 from .models import Service, RequestService
 from users_api import models
 
 
 class MakeService(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
-    queryset = Service.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsServiceProvider)
+
+    def get_queryset(self):
+        return Service.objects.filter(service_provider=self.request.user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -51,7 +53,6 @@ class MakeService(viewsets.ModelViewSet):
 
 class MakeServiceRequest(viewsets.ModelViewSet):
     serializer_class = RequestSerializer
-    queryset = RequestService.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsConsumer)
 
@@ -68,6 +69,9 @@ class MakeServiceRequest(viewsets.ModelViewSet):
             'data': serializer.data
         }
         return Response(status_header)
+
+    def get_queryset(self):
+        return RequestService.objects.filter(consumer=self.request.user)
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -153,3 +157,10 @@ class ListServices(viewsets.ModelViewSet):
             'data': serializer.data
         }
         return Response(status_header)
+
+
+class CreateComment(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    queryset = Service.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)

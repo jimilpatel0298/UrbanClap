@@ -4,11 +4,12 @@ from services_api import views
 
 router = DefaultRouter()
 router.register('services', views.ListServices)
-router.register('requests', views.MakeServiceRequest)
+router.register('requests', views.MakeServiceRequest, base_name='request-list')
 
 router1 = DefaultRouter()
-router1.register('services', views.MakeService)
+router1.register('services', views.MakeService, base_name='service-list')
 router1.register('requests', views.ListOfRequestsToProvider)
+router1.register('comment', views.CreateComment)
 
 urlpatterns = [
     path('consumer/', include(router.urls)),
