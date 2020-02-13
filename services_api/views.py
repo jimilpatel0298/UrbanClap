@@ -61,15 +61,3 @@ class ListServices(viewsets.ModelViewSet):
 
 class CustomerRequestList(viewsets.ModelViewSet):
     pass
-
-# class UserProfileViewSet(viewsets.ModelViewSet):
-#     serializer_class = UserProfileSerializer
-#     queryset = UserProfile.objects.all()
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (UpdateOwnProfile,)
-#     filter_backends = (filters.SearchFilter,)
-#     search_fields = ('name','email',)
-#
-#
-# class UserLoginApiView(ObtainAuthToken):
-#     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
