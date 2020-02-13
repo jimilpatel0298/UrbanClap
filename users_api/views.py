@@ -20,6 +20,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+
         status_header = {
             'status': status.HTTP_201_CREATED,
             'message': "User profile created successfully.",
@@ -68,6 +69,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class UserLoginViewSet(ObtainAuthToken):
     """User Login view"""
+
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -80,4 +82,3 @@ class UserLoginViewSet(ObtainAuthToken):
             "data": serializer.data
         }
         return Response(status_header)
-
