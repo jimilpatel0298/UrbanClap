@@ -44,9 +44,9 @@ class RequestSerializer(serializers.ModelSerializer):
             'status': {
                 'read_only': True
             },
-            # 'comments': {
-            #     'read_only': True
-            # }
+            'comments': {
+                'read_only': True
+            }
         }
 
     def get_service_provider_name(self, data):
@@ -54,3 +54,14 @@ class RequestSerializer(serializers.ModelSerializer):
 
     def get_services_name(self, data):
         return data.service_id.service_name
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ('author','content')
+
+        extra_kwargs = {
+            'author': {
+                'read_only': True
+            }
+        }
