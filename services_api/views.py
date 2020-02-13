@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -7,11 +6,9 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-# from .permissions import UpdateOwnProfile
 from rest_framework.viewsets import GenericViewSet
 
-from users_api import permissions
-from .custom_permissions import IsServiceProvider
+from .custom_permissions import IsServiceProvider, IsConsumer
 from .serializers import ServiceSerializer, RequestSerializer
 from .models import Service, RequestService
 from users_api import models
