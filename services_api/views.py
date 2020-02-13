@@ -91,7 +91,48 @@ class MakeServiceRequest(viewsets.ModelViewSet):
 
 
 class ListOfRequestsToProvider(viewsets.ModelViewSet):
-    pass
+    """List of requests to service provider"""
+    serializer_class = RequestSerializer
+    queryset = RequestService.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsServiceProvider)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        status_header = {
+            'status': status.HTTP_200_OK,
+            'message': "List of requests received successfully.",
+            'data': serializer.data
+        }
+        return Response(status_header)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        # print(request.data)
+        # print(instance.service_id)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        status_header = {
+            'status': status.HTTP_200_OK,
+            'message': "Service request status changed successfully.",
+            'data': serializer.data
+        }
+        return Response(status_header)
 
 
 class ListServices(viewsets.ModelViewSet):
@@ -111,7 +152,7 @@ class ListServices(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         status_header = {
-            'status': status.HTTP_201_CREATED,
+            'status': status.HTTP_200_OK,
             'message': "List of services received successfully.",
             'data': serializer.data
         }
