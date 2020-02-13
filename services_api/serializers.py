@@ -25,9 +25,10 @@ class RequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RequestService
-        fields = ('consumer', 'provider_name', 'service_id', 'service_name', 'request_desc',
+        fields = ('id', 'consumer', 'provider_name', 'service_id', 'service_name', 'request_desc',
                   'status', 'comments')
         extra_kwargs = {
+            'id': {'read_only': True},
             'consumer': {
                 'read_only': True
             },
@@ -35,9 +36,6 @@ class RequestSerializer(serializers.ModelSerializer):
                 'read_only': True
             },
             'provider_name': {
-                'read_only': True
-            },
-            'status': {
                 'read_only': True
             },
             'comments': {

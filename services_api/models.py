@@ -25,7 +25,7 @@ class RequestService(models.Model):
     """ Database model for requested services by customer. """
     consumer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='requestmade')
     service_id = models.ForeignKey('Service', on_delete=models.CASCADE, null=False)
-    request_desc = models.CharField(max_length=255)
+    request_desc = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=255, default='pending')
     requested_at = models.DateTimeField(auto_now_add=True)
     request_updated_at = models.DateTimeField(auto_now=True)
