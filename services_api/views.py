@@ -33,15 +33,21 @@ class MakeServiceRequest(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """Create method for user profile"""
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        status_header = {
-            'status': status.HTTP_201_CREATED,
-            'message': "User request created successfully.",
-            'data': serializer.data
-        }
-        return Response(status_header)
+        print(self.request.POST.get('service_id'))
+        obj = Service.objects.get(id = self.request.POST.get('service_id'))
+        # serializer = self.get_serializer(data=request.data)
+        # print(serializer.data)
+        # serializer.is_valid(raise_exception=True)
+        # self.perform_create(serializer)
+        # print(serializer.data)
+
+        # serializer.save(service_id = obj, service_provider = obj.service_provider_id)
+        # status_header = {
+        #     'status': status.HTTP_201_CREATED,
+        #     'message': "User request created successfully.",
+        #     'data': serializer.data
+        # }
+        # return Response(status_header)
 
 
 class ListOfRequestsToProvider(viewsets.ModelViewSet):

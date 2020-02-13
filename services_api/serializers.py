@@ -25,10 +25,13 @@ class RequestSerializer(serializers.ModelSerializer):
             'consumer': {
                 'read_only': True
             },
+            'provider': {
+                'read_only': True
+            },
             'status': {
                 'read_only': True
             },
-            'comments': {
-                'read_only': True
-            }
+            # 'comments': {
+            #     'read_only': True
+            # }
         }
