@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Service, RequestService
+from .models import Service, RequestService, Comment
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -39,12 +39,6 @@ class RequestSerializer(serializers.ModelSerializer):
             'provider_name': {
                 'read_only': True
             },
-            'status': {
-                'read_only': True
-            },
-            'comments': {
-                'read_only': True
-            }
         }
 
     def get_service_provider_name(self, data):
@@ -56,11 +50,5 @@ class RequestSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Service
-        fields = ('author','content')
-
-        extra_kwargs = {
-            'author': {
-                'read_only': True
-            }
-        }
+        model = Comment
+        fields = ('author', 'content')

@@ -2,6 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets, filters, mixins
+from django.core import serializers
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -10,7 +11,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from .custom_permissions import IsServiceProvider, IsConsumer
 from .serializers import ServiceSerializer, RequestSerializer, CommentSerializer
-from .models import Service, RequestService
+from .models import Service, RequestService, Comment
 from users_api import models
 
 
@@ -116,8 +117,6 @@ class ListOfRequestsToProvider(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        # print(request.data)
-        # print(instance.service_id)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         serializer.save()

@@ -34,8 +34,8 @@ class UserProfileManager(BaseUserManager):
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users"""
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255, null=True)
-    phone = models.CharField(max_length=10, unique=True, null=True)
+    name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=10, unique=True)
     user_type = models.CharField(max_length=255, blank=False, null=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
