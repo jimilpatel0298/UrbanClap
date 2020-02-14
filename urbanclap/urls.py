@@ -22,4 +22,5 @@ urlpatterns = [
     path('api/profile/', include('users_api.urls')),
     path('api/', include('services_api.urls')),
     path('api/login', views.UserLoginViewSet.as_view()),
+    path('api/logout/', views.Logout.as_view()),
 ]
