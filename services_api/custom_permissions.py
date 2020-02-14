@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class IsServiceProvider(BasePermission):
@@ -20,10 +20,16 @@ class IsConsumer(BasePermission):
         if request.user.user_type == 'Consumer':
             return True
 
-class SeeOwnServices(BasePermission):
-    """Allow user to edit their own profile"""
 
-    def has_object_permission(self, request, view, obj):
+
+class StatusCheck(BasePermission):
+    """
+    Allows access to comment if request status is not pending.
+    """
+    def has_permission(self, request, view):
         """Check user is trying to edit their own profile"""
-        if request.method in BasePermission.SAFE_METHODS:
-            return obj.id == request.user.id
+        print("heyy", obj)
+        return False
+        # if request.method in SAFE_METHODS:
+        #     return True
+        # return obj.id == request.user.id
