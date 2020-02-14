@@ -3,6 +3,24 @@ from django.contrib.auth import password_validation
 from users_api import models
 
 
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    """Serializer for change password"""
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    class Meta:
+        model = models.UserProfile
+        fields = ['old_password', 'new_password']
+
+
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    """Serializer to update user object"""
+
+    class Meta:
+        model = models.UserProfile
+        fields = ['id', 'name', 'phone']
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
 

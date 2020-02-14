@@ -1,4 +1,8 @@
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+from rest_framework import status, viewsets, filters, mixins
+from django.core import serializers
 from rest_framework import status, viewsets, mixins, generics
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
@@ -172,7 +176,6 @@ class ListOfRequestsToProvider(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-
         if request.data['status'].lower() not in ['accepted', 'rejected', 'pending', 'completed']:
             return Response({'status': status.HTTP_400_BAD_REQUEST,
             'message': "Status can be only 'accepted', 'rejected', 'pending' or 'completed'."})
