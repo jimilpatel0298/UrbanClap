@@ -43,7 +43,6 @@ class RequestSerializer(serializers.ModelSerializer):
     """Create a new request"""
     provider_name = serializers.SerializerMethodField('get_service_provider_name')
     service_name = serializers.SerializerMethodField('get_services_name')
-    # commentslist = serializers.SerializerMethodField('get_commentslists')
 
     class Meta:
         model = RequestService
@@ -72,3 +71,7 @@ class RequestSerializer(serializers.ModelSerializer):
 
     def get_services_name(self, data):
         return data.service_id.service_name
+
+    # def get_request_set(self, instance,order_field):
+    #     request_ordered = RequestService.objects.all().order_by('status')
+    #     return RequestSerializer(request_ordered, many=True).data
