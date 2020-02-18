@@ -136,11 +136,16 @@ class MakeServiceRequest(viewsets.ModelViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True, context={'order_field': "status"})
+            serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        print(queryset)
+        sort_field = self.request.query_params.get('sort_by', None)
+        if sort_field is not None:
+            serializer = self.get_serializer(queryset.order_by(sort_field), many=True)
+        else:
+            serializer = self.get_serializer(queryset, many=True)
+
+        # print(queryset.order_by(sort_field))
         status_header = {
             'status': status.HTTP_201_CREATED,
             'message': "List of user requests received successfully.",
