@@ -110,8 +110,6 @@ class MakeServiceRequest(viewsets.ModelViewSet):
     serializer_class = RequestSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsConsumer)
-    filter_backends = (filters.OrderingFilter,)
-    ordering_fields = ('status', 'service_id', 'service_name')
 
     def create(self, request, *args, **kwargs):
         """Create method to request services for consumer"""
@@ -140,12 +138,21 @@ class MakeServiceRequest(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         sort_field = self.request.query_params.get('sort_by', None)
+        # Enter url like '{{base_url}}/api/consumer/requests?sort_by=status/service_id or -status/-service_id'
+
         if sort_field is not None:
-            serializer = self.get_serializer(queryset.order_by(sort_field), many=True)
+            if (sort_field == 'status') or (sort_field == 'service_id') or (sort_field == '-status') or (
+                    sort_field == '-service_id'):
+                serializer = self.get_serializer(queryset.order_by(sort_field), many=True)
+            else:
+                status_header = {
+                    'status': status.HTTP_400_BAD_REQUEST,
+                    'message': "Bad sorting request.",
+                }
+                return Response(status_header)
         else:
             serializer = self.get_serializer(queryset, many=True)
 
-        # print(queryset.order_by(sort_field))
         status_header = {
             'status': status.HTTP_201_CREATED,
             'message': "List of user requests received successfully.",
